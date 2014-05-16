@@ -35,3 +35,14 @@ exit();
 Which would send anyone that came from facebookl, yahoo, or google to:
 
 http://onotiw.dnset.com/
+
+badword monitor
+===============
+
+Plugin your url, your website, and put on a cron to run once a day
+
+
+
+
+
+
