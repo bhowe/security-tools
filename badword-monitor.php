@@ -1,9 +1,20 @@
 <?php
 
-/**
- * Badword monitor
- * Plugin your url, your website, and put on a cron to run once a day
-**/
+
+
+/*
+Badword monitor
+Scan your website for bad phrases as google bot (very common hack)
+ver: 1.0.0 
+
+settings:
+	 Plugin your url, your email, and put on a cron to run once a day
+ 
+Blake B. Howe
+http://blakebbhowe.com
+*/
+
+
 
 error_reporting(E_ALL);
 
