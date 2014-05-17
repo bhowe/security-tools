@@ -23,7 +23,6 @@ $email_address = 'enter@email.com';
 //set as google bot lots of times its the only thing the spam will show too.
 //you can do as many user agents as tou want
 
-
 ini_set('user_agent', 'Googlebot/2.1 (+http://www.google.com/bot.html) ');
 
 #add more badwords here
