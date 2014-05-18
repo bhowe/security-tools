@@ -1,5 +1,4 @@
 <?
-
 /*
  * Searches page for words that shouldnt be there.
  *  http://code.google.com/apis/patentsearch/v1/
@@ -13,13 +12,13 @@ http://blakebbhowe.com
 */
 
 
- 
+
 
 class BadWords {
 	
-	$badwords_start = $stack = array("/\bviagra\b/i", "/\bcialis\b/i","/\bcasino\b/i","/\bporn\b/i");
-	$url = '';
 	
+	var $badwords_stack = array("/\bviagra\b/i", "/\bcialis\b/i","/\bcasino\b/i","/\bporn\b/i");
+    var $url = '';
 	/**
 	* @param string pass in your own array of regex badwords
 	*/
@@ -30,6 +29,7 @@ class BadWords {
         }
 		
 		$this->url = $url;
+		
 	}
 	
 
@@ -37,15 +37,15 @@ class BadWords {
     function send_email($to_email,$from_email, $malware_list)
 	{
 	    if(empty($to_email)){
-            throw new My_Exception('email can\'t be empty');
+            throw new Exception('email can\'t be empty');
         }
         
         if(empty($from_email)){
-            throw new My_Exception('url can\'t be empty');
+            throw new Exception('from email can\'t be empty');
         }
         
         if(empty($malware_list)){
-            throw new My_Exception('Malware list. You cant send a empty email');
+            throw new Exception('Malware list. You cant send a empty email');
         }   
         
 	    $to = $to_email;
@@ -56,38 +56,14 @@ class BadWords {
 		mail($to, $subject, $message, $headers);
 	}
 	
-	function get_data($url)
-	{
-	  	$ch = curl_init();
-	  	$timeout = 5;
-	  	curl_setopt($ch, CURLOPT_USERAGENT, 'Googlebot/2.1');
-	  	curl_setopt($ch,CURLOPT_URL,$url);
-	  	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-	  	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
-	  	$data = curl_exec($ch);
-	  	$response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-	  	curl_close($ch);
-	  	return $data;
-	}
-
-
-	function mstrstr($string,$array) {            
-	    foreach($array as $str) {
-	        if(is_array($str)) { 
-	            foreach($str as $st) {
-	                if(!strstr($string,$st)) { break 2; }
-	            }
-	            return true;
-	        } else {
-	            if(strstr($string,$str)) { return true; }
-	        }
-	    }
-	    return false;
-	}
-
-
-	function mstristr($string,$array) {          
-	    foreach($array as $str) {
+	
+	function mstristr($string) { 
+	
+	 if(empty($string)){
+            throw new Exception('Incoming page cant be empty');
+        }       
+	      
+	    foreach($this->badwords_stack as $str) {
 	       
 	          if (preg_match($str, $string)) {return true;}
 	       
@@ -95,8 +71,23 @@ class BadWords {
 	    return false;
 	}
 
-
+	function get_data()
+	{
 	
+	 
+	  	$ch = curl_init();
+	  	$timeout = 5;
+	  	curl_setopt($ch, CURLOPT_USERAGENT, 'Googlebot/2.1');
+	  	curl_setopt($ch,CURLOPT_URL,$this->url);
+	  	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+	  	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+	  	$data = curl_exec($ch);
+	  	$response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	  	curl_close($ch);
+	  	return $data;
+	}
+	
+		
 
  
 	

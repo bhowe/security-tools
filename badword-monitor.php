@@ -1,7 +1,4 @@
 <?php
-
-
-
 /*
 Badword monitor
 Scan your website for bad phrases as google bot (very common hack)
@@ -14,81 +11,20 @@ Blake B. Howe
 http://blakebbhowe.com
 */
 
-
-
 error_reporting(E_ALL);
+require_once('class.Badword.php');
 
-$email_address = 'enter@email.com';
+$to_email_address = 'howe.bobby@gmail.com';
+$from_email_address = 'test@badwordfunkiness.com';
+$url = "http://www.viagra.com/index.aspx";
 
-//set as google bot lots of times its the only thing the spam will show too.
-//you can do as many user agents as tou want
-
-ini_set('user_agent', 'Googlebot/2.1 (+http://www.google.com/bot.html) ');
-
-#add more badwords here
-$badwords[0] = "/\bviagra\b/i";
-$badwords[1] = "/\bcialis\b/i";
-$badwords[2] = "/\bcasino\b/i";
-$badwords[3] = "/\bporn\b/i";
- 
-//this will of course trigger it   
-$url = 'wwww.vigara.com';
-
-$data = @file_get_contents(strtolower($site->url));
-	  
-$bool = mstristr($data,$badwords);
-
-if ($bool){
-	send_email($email_address,$url)
-}
-
-function send_email($email, $malware_list)
-{
-    $to = $email;
-	$subject = 'One or more of your sites have viagra malware';
-	$message = ' One or more of your sites has been flagged as viagra malware';
-	$message .= $malware_list;
-	$headers = 'From:noreply@uptime.com' . "\r\n";
-	mail($to, $subject, $message, $headers);
-}
-
-function get_data($url)
-{
-  	$ch = curl_init();
-  	$timeout = 5;
-  	curl_setopt($ch, CURLOPT_USERAGENT, 'Googlebot/2.1');
-  	curl_setopt($ch,CURLOPT_URL,$url);
-  	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-  	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
-  	$data = curl_exec($ch);
-  	$response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  	curl_close($ch);
-  	return $data;
-}
-
-
-function mstrstr($string,$array) {            
-    foreach($array as $str) {
-        if(is_array($str)) { 
-            foreach($str as $st) {
-                if(!strstr($string,$st)) { break 2; }
-            }
-            return true;
-        } else {
-            if(strstr($string,$str)) { return true; }
-        }
-    }
-    return false;
-}
-
-
-function mstristr($string,$array) {          
-    foreach($array as $str) {
-       
-          if (preg_match($str, $string)) {return true;}
-       
-           }
-    return false;
+//of course this email should trigger it  
+$badword = new Badwords($url);
+$data =$badword->get_data();
+	
+if ($badword->mstristr($data)){
+	$badword->send_email($to_email_address,$from_email_address,$url);
+	echo 'email sent to ' . $to_email_address;
 }
 
 
