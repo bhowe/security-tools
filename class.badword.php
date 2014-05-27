@@ -22,13 +22,8 @@ class BadWords {
 	/**
 	* @param string pass in your own array of regex badwords
 	*/
-	function BadWords($url) {
+	function BadWords() {
 		
-		if(empty($url)){
-            throw new My_Exception('url can\'t be empty');
-        }
-		
-		$this->url = $url;
 		
 	}
 	
@@ -71,14 +66,14 @@ class BadWords {
 	    return false;
 	}
 
-	function get_data()
+	function get_data($url)
 	{
 	
 	 
 	  	$ch = curl_init();
 	  	$timeout = 5;
 	  	curl_setopt($ch, CURLOPT_USERAGENT, 'Googlebot/2.1');
-	  	curl_setopt($ch,CURLOPT_URL,$this->url);
+	  	curl_setopt($ch,CURLOPT_URL,$url);
 	  	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
 	  	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
 	  	$data = curl_exec($ch);
