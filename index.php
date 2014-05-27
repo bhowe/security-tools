@@ -14,12 +14,11 @@ http://blakebbhowe.com
 
 error_reporting(E_ALL);
 
-
+//get for any words that shouldnt be on a normal site as googlebot
 require_once('class.Badword.php');
-
 $to_email_address = 'howe.bobby@gmail.com';
 $from_email_address = 'test@badwordfunkiness.com';
-$url_to_test_badwords = "http://www.viagra.com/index.aspx";
+$url_to_test_badwords = "http://www.viagra.com/";
 
 //of course this email should trigger it  
 $badword = new Badwords();
@@ -30,9 +29,19 @@ if ($badword->mstristr($data)){
 	echo 'this site contained naughty words<br>';
 }
 
+//check the 404 page sometimes you see same badwords there. Just append some crap
+
+$s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 10)), 0, 10);
+$data =$badword->get_data($url_to_test_badwords . "/" . $s);
+	
+if ($badword->mstristr($data)){
+	
+	echo 'the 404 site contained naughty words<br>';
+}
 
 
-$safe_browsing_url = ("https://sb-ssl.google.com/safebrowsing/api/lookup?client=api&apikey=PLUGIN_YOUR_KEY_IN&appver=1.0&pver=3.0&url=");
+
+$safe_browsing_url = ("https://sb-ssl.google.com/safebrowsing/api/lookup?client=api&apikey=&appver=1.0&pver=3.0&url=");
 $malware_testing_url = "http://malware.testing.google.test/testing/malware/";
 $good_testing_url = "http://google.com";
 $encoded_url =  urlencode($malware_testing_url);
