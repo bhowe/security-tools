@@ -41,7 +41,7 @@ if ($badword->mstristr($data)){
 
 
 
-$safe_browsing_url = ("https://sb-ssl.google.com/safebrowsing/api/lookup?client=api&apikey=&appver=1.0&pver=3.0&url=");
+$safe_browsing_url = ("https://sb-ssl.google.com/safebrowsing/api/lookup?client=api&apikey=ABQIAAAA07YIKE_VFqHP6okZ4_cN7BQjUVBXIsBvXh4Tl03t-qq8YIw2yA&appver=1.0&pver=3.0&url=");
 $malware_testing_url = "http://malware.testing.google.test/testing/malware/";
 $good_testing_url = "http://google.com";
 $encoded_url =  urlencode($malware_testing_url);
