@@ -1,4 +1,4 @@
-exploit cleaner
+iexploit cleaner
 ==============
 
 Removes common eval exploit code will have something similar to this:
